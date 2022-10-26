@@ -1,10 +1,12 @@
 from printing import print_info
-from download import download_video
+from info import get_info
+from download import download_videos
 
 
 def main():
-    print_info()
-
+    info = get_info()
+    print_info(*info)
+    download_videos(*info)
 
 if __name__ == '__main__':
     main()

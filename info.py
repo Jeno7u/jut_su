@@ -1,16 +1,22 @@
 import requests
 from bs4 import BeautifulSoup
 import fake_useragent
+from cfonts import render
 
 
 headers = {
     'user-agent': fake_useragent.UserAgent().random
 }
 
+def get_url():
+    logo = render('Jut su', colors=['gray', 'white'], align='left')
+    print(logo)
+
+    url = str(input('[+]Введите ссылку на аниме:\n\nПример ссылки: https://jut.su/horimiya/\n\n\n > '))
+    return url
 
 def get_info():
-    url = str(input('[+]Введите ссылку на аниме:\n\nПример ссылки: https://jut.su/horimiya/\n\n\n> '))
-
+    url = get_url()
     response = requests.get(url, headers=headers).text
     soup = BeautifulSoup(response, 'lxml')
     title = soup.find('h1', class_='header_video').text[9:].replace(' все серии', '').replace(' и сезоны', '')
@@ -47,4 +53,13 @@ def get_info():
         main_info['1 сезон'] = [s.get('href') for s in series]
 
 
-    return title, genre, main_info
+    seasons_name = list(main_info.keys())
+    if 'Полнометражные фильмы' in seasons_name:
+        films_info = main_info['Полнометражные фильмы']
+        main_info.pop('Полнометражные фильмы')
+        series_info = main_info
+    else:
+        films_info = []
+        series_info = main_info
+
+    return title, genre, series_info, films_info

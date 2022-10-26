@@ -1,38 +1,27 @@
 from cfonts import render
 from os import system
 from colorama import Style, Fore
-from info import get_info
 
 
-def print_info():
+def print_info(title, genre, series_info, films_info):
     logo = render('Jut su', colors=['gray', 'white'], align='left')
 
-    print(logo)
-    
-    title, genre, main_info = get_info()
-
-    seasons = list(main_info.keys())
-    if 'Полнометражные фильмы' in seasons:
-        films_info = main_info['Полнометражные фильмы']
-        main_info.pop('Полнометражные фильмы')
-    else:
-        films_info = []
-    
     system('cls')
     
+
     print(logo)
     print(f'Название: {title}')
     print(genre, '\n')
 
-    season_name = "сезон"
-
+    season_str = 'сезон'
+    seasons_name = list(series_info.keys())
     print(f'{Fore.BLACK}{Style.BRIGHT}Сезоны:{Style.RESET_ALL}')
-    for i in range(len(main_info)):
-        print(f'    {str(i+1)+")" if season_name not in seasons[0] else ""} {seasons[i]}: {len(main_info[seasons[i]])}', end='')
-        if len(str(len(main_info[seasons[i]]))) > 1 and int(str(len(main_info[seasons[i]]))[-2]) == 1: 
+    for i , key in enumerate(seasons_name):
+        print(f'    {str(i+1)+")" if season_str not in seasons_name[0] else ""}{key}: {len(series_info[key])}', end='')
+        if len(str(len(series_info[key]))) > 1 and int(str(len(series_info[key]))[-2]) == 1: 
             print(' эпизодов')
-        elif int(str(len(main_info[seasons[i]]))[-1]) == 1: print(' эпизод') 
-        elif int(str(len(main_info[seasons[i]]))[-1]) > 4 or int(str(len(main_info[seasons[i]]))[-1]) == 0: print(' эпизодов') 
+        elif int(str(len(series_info[key]))[-1]) == 1: print(' эпизод') 
+        elif int(str(len(series_info[key]))[-1]) > 4 or int(str(len(series_info[key]))[-1]) == 0: print(' эпизодов') 
         else: print(' эпизода') 
 
 
@@ -40,3 +29,20 @@ def print_info():
         print(f'\n{Fore.BLACK}{Style.BRIGHT}Фильмы:{Style.RESET_ALL}')
         for i in range(len(films_info)):
             print(f'    Фильм {i+1}')
+    
+
+    print(f'\n\nВведите сезон/фильм который хотите скачать:')
+    print(Fore.BLACK, Style.BRIGHT, end='')
+    print(f'\nПример #1: S1 (скачать первый сезон)')
+    print(f'Пример #2: F2 (скачать второй фильм)')
+    print(Style.RESET_ALL)
+
+    available = ['S'+str(i) for i in range(1, len(series_info)+1)] + ['F'+str(i) for i in range(1, len(films_info)+1)]
+    available = ', '.join(available)
+    print(f'Доступные сезоны/фильмы: {available}\n\n')
+     
+
+
+    
+    
+    
