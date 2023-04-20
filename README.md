@@ -19,7 +19,7 @@ pip install -r requirements.txt
 Запуск программы
 
 ```
-python book.py
+python main.py
 ```
 
 Данный проект был написан в качестве индивидуального проекта для 10 класса.
